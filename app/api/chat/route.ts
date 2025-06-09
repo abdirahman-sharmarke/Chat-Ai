@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Format messages for OpenAI-compatible API
-    const formattedMessages = messages.map((msg: any) => ({
+    const formattedMessages = messages.map((msg: { role: string; content: string }) => ({
       role: msg.role,
       content: msg.content,
     }));
@@ -43,13 +43,15 @@ export async function POST(request: NextRequest) {
     } else {
       throw new Error('No response received from OpenRouter');
     }
-  } catch (error: any) {
-    console.error('Claude API error:', error);
+  } catch (error: unknown) {
+    console.error('OpenRouter API error:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     
     return NextResponse.json(
       { 
         error: 'Failed to get response from OpenRouter',
-        details: error.message 
+        details: errorMessage 
       },
       { status: 500 }
     );
