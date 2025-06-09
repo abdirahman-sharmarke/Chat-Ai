@@ -28,9 +28,9 @@ export async function POST(request: NextRequest) {
     }));
 
     const response = await openai.chat.completions.create({
-      model: 'anthropic/claude-3.5-sonnet', // Claude model through OpenRouter
+      model: 'anthropic/claude-3-haiku', // Much cheaper model
       messages: formattedMessages,
-      max_tokens: 2000, // Reduced to fit within your credit limit
+      max_tokens: 500, // Very small to work with limited credits
       temperature: 0.7,
     });
 
